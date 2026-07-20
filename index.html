@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spotify — Music for everyone</title>
+
+<!-- Fonts: Montserrat (bold headings, close to a Circular-style geometric sans), Inter for UI -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== Loading Screen ===== -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-disc"></div>
+    <p class="loading-text">Loading your music…</p>
+  </div>
+
+  <div class="app" id="app">
+
+    <!-- ===== Mobile Hamburger Toggle ===== -->
+    <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__logo">
+        <span class="logo-mark">♫</span>
+        <span class="logo-text">Spotify</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <ul>
+          <li><a href="#" class="nav-link active" data-view="home"><span class="icon">⌂</span>Home</a></li>
+          <li><a href="#" class="nav-link" data-view="search"><span class="icon">⌕</span>Search</a></li>
+          <li><a href="#" class="nav-link" data-view="library"><span class="icon">☰</span>Your Library</a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar__actions">
+        <button class="sidebar__action-btn" id="createPlaylistBtn">
+          <span class="icon-box">+</span> Create Playlist
+        </button>
+        <a href="#" class="sidebar__action-btn" id="likedSongsBtn">
+          <span class="icon-box icon-box--gradient">♥</span> Liked Songs
+        </a>
+      </div>
+
+      <div class="sidebar__divider"></div>
+
+      <div class="sidebar__playlists" id="sidebarPlaylists">
+        <!-- Populated by JS: recently played mini list -->
+      </div>
+
+      <div class="sidebar__footer">
+        <a href="#">Legal</a>
+        <a href="#">Privacy Center</a>
+        <a href="#">Cookies</a>
+        <a href="#">About Ads</a>
+        <p class="sidebar__copyright">© 2026 Spotify</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN COLUMN (top nav + content) ===== -->
+    <div class="main-column">
+
+      <!-- ===== TOP NAVIGATION ===== -->
+      <header class="topnav">
+        <div class="topnav__left">
+          <button class="nav-arrow" id="backBtn" aria-label="Go back">‹</button>
+          <button class="nav-arrow" id="forwardBtn" aria-label="Go forward">›</button>
+        </div>
+
+        <div class="topnav__search">
+          <span class="topnav__search-icon">⌕</span>
+          <input type="text" id="searchInput" placeholder="What do you want to listen to?" autocomplete="off" />
+        </div>
+
+        <div class="topnav__right">
+          <button class="pill-btn">Upgrade</button>
+          <div class="user-profile" id="userProfile">
+            <div class="user-avatar">S</div>
+            <span>Sujata</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ===== MAIN CONTENT ===== -->
+      <main class="content" id="content">
+
+        <!-- Greeting -->
+        <section class="greeting-section">
+          <h1 id="greetingText">Good Evening</h1>
+        </section>
+
+        <!-- Quick-access grid (recently played tiles) -->
+        <section class="quick-grid" id="quickGrid"></section>
+
+        <!-- Recently Played -->
+        <section class="row-section">
+          <div class="row-section__header">
+            <h2>Recently Played</h2>
+            <a href="#" class="show-all">Show all</a>
+          </div>
+          <div class="card-row" id="recentlyPlayedRow"></div>
+        </section>
+
+        <!-- Popular Albums -->
+        <section class="row-section">
+          <div class="row-section__header">
+            <h2>Popular Albums</h2>
+            <a href="#" class="show-all">Show all</a>
+          </div>
+          <div class="card-row" id="popularAlbumsRow"></div>
+        </section>
+
+        <!-- Made For You -->
+        <section class="row-section">
+          <div class="row-section__header">
+            <h2>Made For You</h2>
+            <a href="#" class="show-all">Show all</a>
+          </div>
+          <div class="card-row" id="madeForYouRow"></div>
+        </section>
+
+        <!-- Featured Playlists -->
+        <section class="row-section">
+          <div class="row-section__header">
+            <h2>Featured Playlists</h2>
+            <a href="#" class="show-all">Show all</a>
+          </div>
+          <div class="card-row" id="featuredPlaylistsRow"></div>
+        </section>
+
+        <!-- No results state (hidden by default) -->
+        <section class="empty-state" id="emptyState" hidden>
+          <p class="empty-state__title">No matches here</p>
+          <p class="empty-state__desc">Try a different title — nothing in your library matches that search yet.</p>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM MUSIC PLAYER ===== -->
+  <footer class="player" id="player">
+
+    <!-- Now playing info -->
+    <div class="player__now-playing">
+      <div class="player__disc-wrap">
+        <img id="playerCover" class="player__cover" src="" alt="Album cover" />
+        <div class="player__vinyl" id="playerVinyl"></div>
+      </div>
+      <div class="player__meta">
+        <p class="player__title" id="playerTitle">—</p>
+        <p class="player__artist" id="playerArtist">—</p>
+      </div>
+      <button class="like-btn" id="likeBtn" aria-label="Like song">♡</button>
+    </div>
+
+    <!-- Center controls -->
+    <div class="player__center">
+      <div class="player__controls">
+        <button class="ctrl-btn" id="shuffleBtn" aria-label="Shuffle" title="Shuffle">⤨</button>
+        <button class="ctrl-btn" id="prevBtn" aria-label="Previous">⏮</button>
+        <button class="ctrl-btn ctrl-btn--play" id="playPauseBtn" aria-label="Play">▶</button>
+        <button class="ctrl-btn" id="nextBtn" aria-label="Next">⏭</button>
+        <button class="ctrl-btn" id="repeatBtn" aria-label="Repeat" title="Repeat">⟲</button>
+      </div>
+      <div class="player__progress">
+        <span class="time-label" id="currentTime">0:00</span>
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-bar__fill" id="progressFill"></div>
+          <div class="progress-bar__handle" id="progressHandle"></div>
+        </div>
+        <span class="time-label" id="totalTime">0:00</span>
+      </div>
+    </div>
+
+    <!-- Volume + extras -->
+    <div class="player__extras">
+      <span class="volume-icon" id="volumeIcon">♪</span>
+      <div class="volume-slider" id="volumeSlider">
+        <div class="volume-slider__fill" id="volumeFill"></div>
+        <div class="volume-slider__handle" id="volumeHandle"></div>
+      </div>
+      <span class="volume-percent" id="volumePercent">70%</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
